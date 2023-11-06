@@ -1,46 +1,124 @@
-let a, op, b, displayValue = 0, storedValues = [], result;
+let masterArray = [inputtedData = [], inputtedOps = []];
 
-let displayScreen = document.getElementById(`display-screen`);
-displayScreen.textContent = displayValue
+const infoScreen = document.getElementById(`info-screen`)
+const resultScreen = document.getElementById(`result-screen`)
 
-const buttons = document.querySelectorAll('button');
-buttons.forEach((button) => {
-  button.addEventListener('click', () => {
-    if(button.id == "=") {
-        op = storedValues[1].toString()
-        a = parseInt(storedValues[0])
-        b = parseInt(storedValues[2])
-        result = operate(op, a, b)
-        displayScreen.textContent = result;
-    } else {
-        displayScreen.textContent = button.id
-        storedValues.push(button.id)
+const buttons = document.querySelectorAll(`button`);
+buttons.forEach(button => {
+    button.addEventListener(`click`, () => {
+        resultScreen.style.cssText = `color: white;`
+        inputtedData.push(button.id)
+        displayEntry(inputtedData)
+        if(isNaN(button.id)) {
+            inputtedOps.push(button.id)
+            if(button.id ===`clear`) {
+                clearData(masterArray, true)
+            }
+        }
+        inputtedOps.length === 2 ? calculate(masterArray) : false;
+    })
+    
+});
+
+
+function calculate(arr) {
+    values = getValues(arr),
+    lastOp = (arr[1])[1]
+    result = operate(values)
+    console.error(`The result is: ` + result)
+    displayResult(result)
+    clearData(masterArray)
+    a = result;
+    (arr[0]).push(a)
+    if(!(lastOp === `=`)) { 
+        (arr[0]).push(lastOp);
+        (arr[1]).push(lastOp);
     }
-    }); 
-})
+}
+
+function getValues(arr) {
+    trueOp = (arr[1])[0]
+    data = arr[0]
+    opIndex = data.indexOf(trueOp)
+    lastOp = data.splice(-1)
+    b = data.splice(opIndex+1).join(``)
+    op = data.splice(opIndex)
+    a = data.splice(0).join(``)
+    console.log(`a: ` + a + ` | op: ` + trueOp + ` &= ` + op + ` | b: ` + b + ` | lastOp: ` + lastOp)
+    return [a, trueOp , b]
+}
+
+function displayEntry(arr) {
+    infoScreen.textContent = arr.join(``)
+}
+
+function displayResult(value) {
+    value = formatValueForDisplay(value)
+    resultScreen.textContent = value
+    resultScreen.style.cssText = `color: green;`
+}
+
+function formatValueForDisplay(value) {
+    value = tidyCommas(value);
+    value = tidyDecimals(value);
+    return value;
+}
+
+function tidyDecimals(value) {
+    console.log(value + ` === ` + parseInt(value) + ` : ` + (value === parseInt(value)))
+    if(!(value ===  parseInt(value))) {
+        value = value.toFixed(3)
+    }
+    return value;
+}
+
+function tidyCommas(value) {
+    stringValue = (value.toString()).split(``)
+    length = stringValue.length;
+    console.log(`value: ` + value + ` | length: ` + length);
+    totalCommas = parseInt(length / 3);
+    console.table(`total commas: ` + totalCommas);
+    for(x = 0; x <= totalCommas; x++) {
+
+    }
+    return value;
+}
+
+function operate(arr) {
+    a = parseInt(arr[0])
+    op = arr[1]
+    b = parseInt(arr[2])
+    switch(op) {
+            case "+": return add(a,b)
+            case "-": return subtract(a,b)
+            case "*": return multiply(a,b)
+            case "/": return divide(a,b)
+        }
+}
 
 function add(a, b) {
-    return a + b;
+    return (a + b);
 }
 
 function subtract(a, b) {
-    return a - b;
+    return (a - b);
 }
 
 function multiply(a, b) {
-    return a * b;
+    return (a * b);
 }
 
 function divide(a, b) {
-    return a / b;
+    return (a / b);
 }
 
-function operate(op, a, b) {
-switch(op) {
-        case "+": return add(a,b)
-        case "-": return subtract(a,b)
-        case "*": return multiply(a,b)
-        case "/": return divide(a,b)
+function clearData(arr, full) {
+    arr[0].splice(0)
+    arr[1].splice(0)
+    if(full) {
+        infoScreen.textContent = 0;
+        resultScreen.textContent = 0;
+        console.warn("Data has been cleared");
     }
-    storedValues.clear()
+    
 }

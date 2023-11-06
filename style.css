@@ -1,4 +1,48 @@
 * {
     background-color: black;
     color: white;
+    font-size: 25px;
+    border-radius: 15px;
+}
+
+button {
+    margin: 5px;
+    padding: 15px;
+}
+
+.calculator {
+    margin: auto;
+    margin-top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid grey;
+    width: max-content;
+    flex-direction: column;
+}
+
+.screens {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid grey;
+    width: 230px;
+    padding: 15px;
+    
+}
+
+#info-screen,
+#result-screen {
+    font-size: 50px;
+}
+
+#result-screen {
+    align-self: flex-end;
+}
+
+.first-row,
+.second-row,
+.third-row,
+.fourth-row {
+    display: flex;
+    align-self: center;
 }
