@@ -67,7 +67,17 @@ function formatValueForDisplay(value) {
 function tidyDecimals(value) {
     console.log(value + ` === ` + parseInt(value) + ` : ` + (value === parseInt(value)))
     if(!(value ===  parseInt(value))) {
-        value = value.toFixed(3)
+        console.log(`here`)
+        console.log(`value: ` + value + ` == ` + value.toFixed(1) + ` (fixed value)`)
+        for(x = 1; x >= 5; x++) {
+            console.log(`value: ` + value + ` == ` + value.toFixed(x) + ` (fixed value)`)
+            if (value == value.toFixed(x)) {
+                console.log(`true`)
+                return value.toFixed(x)
+            }
+            console.log(`false`)
+            return value.toFixed(5)
+        }
     }
     return value;
 }
@@ -85,13 +95,13 @@ function tidyCommas(value) {
 }
 
 function operate(arr) {
-    a = parseInt(arr[0])
+    a = parseInt((arr[0]*10000))
     op = arr[1]
-    b = parseInt(arr[2])
+    b = parseInt((arr[2]*10000))
     switch(op) {
-            case "+": return add(a,b)
-            case "-": return subtract(a,b)
-            case "*": return multiply(a,b)
+            case "+": return add(a,b)/10000
+            case "-": return subtract(a,b)/10000
+            case "*": return multiply(a,b)/(10000*10000)
             case "/": return divide(a,b)
         }
 }
