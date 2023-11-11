@@ -1,38 +1,51 @@
-let masterArray = [inputtedData = [], inputtedOps = []];
+let masterArray = [inputtedData = [], inputtedOps = []],
+allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
 const infoScreen = document.getElementById(`info-screen`)
 const resultScreen = document.getElementById(`result-screen`)
+
+const keyboardInput = document.addEventListener(`keypress`, event => {
+    resultScreen.style.cssText = `color: white;`
+    if(allowedKeys.includes(event.key)) {
+        if(event.key !== `Enter`) { 
+            calculate(event.key, masterArray)
+        } else {
+            calculate(`=`, masterArray)
+        }
+    }
+})
 
 const buttons = document.querySelectorAll(`button`);
 buttons.forEach(button => {
     button.addEventListener(`click`, () => {
         resultScreen.style.cssText = `color: white;`
-        inputtedData.push(button.id)
-        displayEntry(inputtedData)
-        if(isNaN(button.id)) {
-            inputtedOps.push(button.id)
-            if(button.id ===`clear`) {
-                clearData(masterArray, true)
-            }
-        }
-        inputtedOps.length === 2 ? calculate(masterArray) : false;
+        calculate(button.id, masterArray)
     })
-    
 });
 
 
-function calculate(arr) {
-    values = getValues(arr),
-    lastOp = (arr[1])[1]
-    result = operate(values)
-    console.error(`The result is: ` + result)
-    displayResult(result)
-    clearData(masterArray)
-    a = result;
-    (arr[0]).push(a)
-    if(!(lastOp === `=`)) { 
-        (arr[0]).push(lastOp);
-        (arr[1]).push(lastOp);
+function calculate(value, arr) {
+    inputtedData.push(value)
+    displayEntry(inputtedData)
+    if(isNaN(value)) {
+        inputtedOps.push(value)
+        if(value ===`clear`) {
+            clearData(arr, true)
+        }
+    }
+    if(inputtedOps.length === 2) {
+        values = getValues(arr),
+        lastOp = (arr[1])[1]
+        result = operate(values)
+        console.error(`The result is: ` + result)
+        displayResult(result)
+        clearData(masterArray)
+        a = result;
+        (arr[0]).push(a)
+        if(!(lastOp === `=`)) { 
+            (arr[0]).push(lastOp);
+            (arr[1]).push(lastOp);
+        }
     }
 }
 
@@ -59,39 +72,56 @@ function displayResult(value) {
 }
 
 function formatValueForDisplay(value) {
-    value = tidyCommas(value);
-    value = tidyDecimals(value);
+    stringValue = value.toString()
+    if(!(stringValue.includes(`.`))) {
+        value = tidyCommas(value);
+    } else {
+        values = stringValue.split(`.`)
+        integers = tidyCommas(values[0]);
+        decimals = tidyDecimals(values[1]);
+        console.log(`integers: ` + integers + ` | decimals: ` + decimals)
+        console.error(integers + decimals)
+        value = integers + `.` + decimals
+        console.error(value)
+    }
     return value;
 }
 
 function tidyDecimals(value) {
-    console.log(value + ` === ` + parseInt(value) + ` : ` + (value === parseInt(value)))
-    if(!(value ===  parseInt(value))) {
-        console.log(`here`)
-        console.log(`value: ` + value + ` == ` + value.toFixed(1) + ` (fixed value)`)
-        for(x = 1; x >= 5; x++) {
-            console.log(`value: ` + value + ` == ` + value.toFixed(x) + ` (fixed value)`)
+    decimalValue = 0;
+    valueLength = value.length
+    makeDecimal = [1]
+    for(x = 1; x <= valueLength; x++) {
+        makeDecimal.push(0)
+    }
+    makeDecimal = makeDecimal.join(``);
+    value = value / makeDecimal;
+    if(valueLength >= 5) {
+        decimalValue = value.toFixed(5)
+    } else {
+        for(x = 1; x <= 5; x++) {
             if (value == value.toFixed(x)) {
-                console.log(`true`)
-                return value.toFixed(x)
+                decimalValue = value.toFixed(x)
+                break;
             }
-            console.log(`false`)
-            return value.toFixed(5)
         }
     }
-    return value;
+    decimals = decimalValue.split(`.`)
+    return decimals[1];
 }
 
 function tidyCommas(value) {
     stringValue = (value.toString()).split(``)
-    length = stringValue.length;
-    console.log(`value: ` + value + ` | length: ` + length);
-    totalCommas = parseInt(length / 3);
+    console.log(`stringValue: ` + stringValue)
+    stringLength = stringValue.length;
+    console.log(`value: ` + value + ` | length: ` + stringLength);
+    totalCommas = parseInt((stringLength-1) / 3);
     console.table(`total commas: ` + totalCommas);
-    for(x = 0; x <= totalCommas; x++) {
-
+    for(x = 1; x <= totalCommas; x++) {
+        stringValue.splice((stringLength-(3 * x)), 0, `,`)
     }
-    return value;
+    console.log(`stringValue: ` + stringValue)
+    return stringValue.join(``);
 }
 
 function operate(arr) {
