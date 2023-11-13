@@ -1,4 +1,4 @@
-let masterArray = [inputtedData = [], inputtedOps = []],
+let masterArray = [inputtedData = [], inputtedOps = [], inputDisplay = []],
 allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
 const infoScreen = document.getElementById(`info-screen`)
@@ -25,6 +25,8 @@ buttons.forEach(button => {
 
 
 function calculate(value, arr) {
+    inputtedData = arr[0]
+    inputtedOps = arr[1]
     inputtedData.push(value)
     displayEntry(inputtedData)
     if(isNaN(value)) {
@@ -32,7 +34,21 @@ function calculate(value, arr) {
         if(value ===`clear`) {
             clearData(arr, true)
         }
+    }    
+    
+    if(inputtedOps.length === 1) {
+        inputDisplay = arr[2]        
+        copyInputtedData =  inputtedData.slice(0)
+        console.table(copyInputtedData)
+        op = copyInputtedData.splice(-1)
+        a = copyInputtedData.splice(0)
+        console.log(`op: ` + op + `| a: ` + a)
+        a = a.join(``)
+        inputDisplay.push(a, op)
+        console.table(inputDisplay)
+        displayEntry(inputDisplay)
     }
+
     if(inputtedOps.length === 2) {
         values = getValues(arr),
         lastOp = (arr[1])[1]
@@ -62,7 +78,11 @@ function getValues(arr) {
 }
 
 function displayEntry(arr) {
-    infoScreen.textContent = arr.join(``)
+    value = arr.join(``)
+    value = formatValueForDisplay(value)
+    console.log(value)
+    infoScreen.textContent = value
+    //check comma function and try and use new array?
 }
 
 function displayResult(value) {
@@ -79,10 +99,7 @@ function formatValueForDisplay(value) {
         values = stringValue.split(`.`)
         integers = tidyCommas(values[0]);
         decimals = tidyDecimals(values[1]);
-        console.log(`integers: ` + integers + ` | decimals: ` + decimals)
-        console.error(integers + decimals)
         value = integers + `.` + decimals
-        console.error(value)
     }
     return value;
 }
@@ -112,15 +129,11 @@ function tidyDecimals(value) {
 
 function tidyCommas(value) {
     stringValue = (value.toString()).split(``)
-    console.log(`stringValue: ` + stringValue)
     stringLength = stringValue.length;
-    console.log(`value: ` + value + ` | length: ` + stringLength);
     totalCommas = parseInt((stringLength-1) / 3);
-    console.table(`total commas: ` + totalCommas);
     for(x = 1; x <= totalCommas; x++) {
         stringValue.splice((stringLength-(3 * x)), 0, `,`)
     }
-    console.log(`stringValue: ` + stringValue)
     return stringValue.join(``);
 }
 
