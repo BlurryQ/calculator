@@ -1,4 +1,4 @@
-let masterArray = [inputtedData = [], inputtedOps = [], inputDisplay = []],
+let masterArray = [inputtedData = [], inputtedOps = []],
 allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
 const infoScreen = document.getElementById(`info-screen`)
@@ -8,9 +8,9 @@ const keyboardInput = document.addEventListener(`keypress`, event => {
     resultScreen.style.cssText = `color: white;`
     if(allowedKeys.includes(event.key)) {
         if(event.key !== `Enter`) { 
-            calculate(event.key, masterArray)
+            operate(event.key, masterArray)
         } else {
-            calculate(`=`, masterArray)
+            operate(`=`, masterArray)
         }
     }
 })
@@ -19,45 +19,39 @@ const buttons = document.querySelectorAll(`button`);
 buttons.forEach(button => {
     button.addEventListener(`click`, () => {
         resultScreen.style.cssText = `color: white;`
-        calculate(button.id, masterArray)
+        operate(button.id, masterArray)
     })
 });
 
 
-function calculate(value, arr) {
-    inputtedData = arr[0]
+function operate(value, arr) {
+    data = arr[0]
     inputtedOps = arr[1]
     inputtedData.push(value)
-    displayEntry(inputtedData)
+    ops = arr[1],
+    amountOps = ops.length;
     if(isNaN(value)) {
         inputtedOps.push(value)
         if(value ===`clear`) {
             clearData(arr, true)
         }
-    }    
-    
-    if(inputtedOps.length === 1) {
-        inputDisplay = arr[2]        
-        copyInputtedData =  inputtedData.slice(0)
-        console.table(copyInputtedData)
-        op = copyInputtedData.splice(-1)
-        a = copyInputtedData.splice(0)
-        console.log(`op: ` + op + `| a: ` + a)
-        a = a.join(``)
-        inputDisplay.push(a, op)
-        console.table(inputDisplay)
-        displayEntry(inputDisplay)
+        isEquals = inputtedOps[0].toString()
+        if((isEquals === `=`) && (value === `=`)) {
+            displayError(`equalsFirstOp`)
+            return;
+        }
     }
-
-    if(inputtedOps.length === 2) {
-        values = getValues(arr),
-        lastOp = (arr[1])[1]
-        result = operate(values)
-        console.error(`The result is: ` + result)
+    values = getValues(masterArray)
+    //console.log(values)
+    displayEntry(values)
+    if(amountOps === 2) {
+        result = calculate(values)
+        if(result === `error`) { return; }
         displayResult(result)
         clearData(masterArray)
         a = result;
         (arr[0]).push(a)
+        lastOp = lastOp.toString()
         if(!(lastOp === `=`)) { 
             (arr[0]).push(lastOp);
             (arr[1]).push(lastOp);
@@ -66,23 +60,55 @@ function calculate(value, arr) {
 }
 
 function getValues(arr) {
-    trueOp = (arr[1])[0]
-    data = arr[0]
-    opIndex = data.indexOf(trueOp)
-    lastOp = data.splice(-1)
-    b = data.splice(opIndex+1).join(``)
-    op = data.splice(opIndex)
-    a = data.splice(0).join(``)
-    console.log(`a: ` + a + ` | op: ` + trueOp + ` &= ` + op + ` | b: ` + b + ` | lastOp: ` + lastOp)
-    return [a, trueOp , b]
+    values = [],  
+    trueOp = (arr[1])[0],
+    data = arr[0],
+    lastOp = (arr[1])[1],
+    ops = arr[1],
+    amountOps = ops.length;
+    switch(amountOps) {
+        case 0:
+                copyData =  data.slice(0)
+                copyData.forEach((button, index) => {
+                    if(isNaN(button)) {
+                        copyData.splice(index,1)
+                    }
+                });
+                a = copyData.splice(0)
+                a = a.join(``)
+                values.push(a)
+                break;
+        case 1: 
+                copyData = data.slice(0)
+                copyData.forEach((number, index) => {
+                    if(isNaN(number)) {
+                        b = copyData.splice(index+1)
+                        copyData.splice(index,1)
+                    }
+                });
+                op = arr[1][0]
+                a = copyData.splice(0)
+                a = a.join(``)
+                b = b.join(``)
+                values.push(a, op, b)
+                break;
+        case 2:
+                opIndex = data.indexOf(trueOp)
+                lastOp = data.splice(-1)
+                b = data.splice(opIndex+1).join(``)
+                op = data.splice(opIndex)
+                a = data.splice(0).join(``)
+                values.push(a, trueOp , b)
+    }
+    return values;
 }
 
 function displayEntry(arr) {
-    value = arr.join(``)
-    value = formatValueForDisplay(value)
-    console.log(value)
-    infoScreen.textContent = value
-    //check comma function and try and use new array?
+        infoScreen.textContent = ``;  
+        arr.forEach(value => {
+            value = formatValueForDisplay(value)
+            infoScreen.textContent += value    
+        });
 }
 
 function displayResult(value) {
@@ -128,19 +154,20 @@ function tidyDecimals(value) {
 }
 
 function tidyCommas(value) {
-    stringValue = (value.toString()).split(``)
-    stringLength = stringValue.length;
-    totalCommas = parseInt((stringLength-1) / 3);
-    for(x = 1; x <= totalCommas; x++) {
-        stringValue.splice((stringLength-(3 * x)), 0, `,`)
-    }
-    return stringValue.join(``);
+        stringValue = (value.toString()).split(``)
+        stringLength = stringValue.length;
+        totalCommas = parseInt((stringLength-1) / 3);
+        for(x = 1; x <= totalCommas; x++) {
+            stringValue.splice((stringLength-(3 * x)), 0, `,`)
+        }
+        return stringValue.join(``);
 }
 
-function operate(arr) {
+function calculate(arr) {
     a = parseInt((arr[0]*10000))
     op = arr[1]
     b = parseInt((arr[2]*10000))
+    if(op === `/` && (a === 0 || b === 0)) { return displayError(`divideZero`)}
     switch(op) {
             case "+": return add(a,b)/10000
             case "-": return subtract(a,b)/10000
@@ -171,7 +198,17 @@ function clearData(arr, full) {
     if(full) {
         infoScreen.textContent = 0;
         resultScreen.textContent = 0;
-        console.warn("Data has been cleared");
     }
     
+}
+
+function displayError(record) {
+    infoScreen.textContent = `Error:`;
+    switch(record) {
+        case `equalsFirstOp`:   resultScreen.textContent = `No operators found`;
+                                break;
+        case `divideZero`:      resultScreen.textContent = `Even Google can't do that!!`;
+                                return `error`;
+                                break;
+    }
 }
