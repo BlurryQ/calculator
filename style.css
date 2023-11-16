@@ -8,6 +8,8 @@
 button {
     margin: 5px;
     padding: 15px;
+    width: 70px;
+    border: 3px double grey;
 }
 
 .calculator {
@@ -19,20 +21,22 @@ button {
     border: 3px solid grey;
     width: max-content;
     flex-direction: column;
+    padding: 15px;
 }
 
 .screens {
     display: flex;
     flex-direction: column;
-    border: 1px solid grey;
-    width: 230px;
-    padding: 15px;
-    
+    border: 5px double black;
+    width: 280px;
+    padding: 10px;
+    background-color: grey;
 }
 
 #info-screen,
 #result-screen {
     font-size: 50px;
+    background-color: grey;
 }
 
 #result-screen {
@@ -45,4 +49,32 @@ button {
 .fourth-row {
     display: flex;
     align-self: center;
+}
+
+.first-row {
+    padding-top: 10px;
+}
+
+#\= {
+    background-color: green;
+}
+
+#\/ {
+    background-color: purple;
+}
+
+#\+ {
+    background-color: blue;
+}
+
+#\- {
+    background-color: violet;
+}
+
+#\* {
+    background-color: orangered;
+}
+
+#clear {
+    background-color: red;
 }
