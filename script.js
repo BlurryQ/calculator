@@ -1,16 +1,16 @@
 let masterArray = [inputtedData = [], inputtedOps = []],
 allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
-const infoScreen = document.getElementById(`info-screen`)
-const resultScreen = document.getElementById(`result-screen`)
+const infoScreen = document.getElementById(`info-screen`);
+const resultScreen = document.getElementById(`result-screen`);
 
 const keyboardInput = document.addEventListener(`keypress`, event => {
-    resultScreen.style.cssText = `color: white;`
+    resultScreen.style.cssText = `color: white;`;
     if(allowedKeys.includes(event.key)) {
         if(event.key !== `Enter`) { 
-            operate(event.key, masterArray)
+            operate(event.key, masterArray);
         } else {
-            operate(`=`, masterArray)
+            operate(`=`, masterArray);
         }
     }
 })
@@ -18,40 +18,47 @@ const keyboardInput = document.addEventListener(`keypress`, event => {
 const buttons = document.querySelectorAll(`button`);
 buttons.forEach(button => {
     button.addEventListener(`click`, () => {
-        resultScreen.style.cssText = `color: white;`
-        operate(button.id, masterArray)
+        resultScreen.style.cssText = `color: white;`;
+        operate(button.id, masterArray);
     })
 });
 
 
 function operate(value, arr) {
-    data = arr[0]
-    inputtedOps = arr[1]
-    inputtedData.push(value)
+    console.warn(`THIS IS THE START`);
+    data = arr[0],
+    totalOps = arr[1];
+    data.push(value);
     ops = arr[1],
     amountOps = ops.length;
-    if(isNaN(value)) {
-        inputtedOps.push(value)
+    if(isNaN(value) && value != `.`) {
+        totalOps.push(value)
         if(value ===`clear`) {
-            clearData(arr, true)
+            clearData(arr, true);
         }
-        isEquals = inputtedOps[0].toString()
+        isEquals = totalOps[0].toString();
         if((isEquals === `=`) && (value === `=`)) {
-            displayError(`equalsFirstOp`)
+            displayError(`equalsFirstOp`);
             return;
         }
     }
-    values = getValues(masterArray)
-    //console.log(values)
-    displayEntry(values)
+    values = getValues(masterArray);
+    console.log(`operate values: ` + values); 
+    displayEntry(values);
+    console.table(values)
+    console.error(`amountOps`);
+    console.table(totalOps);
+    console.table(data);
     if(amountOps === 2) {
-        result = calculate(values)
+        console.log(`values HERE: ` + values)
+        result = calculate(values);
         if(result === `error`) { return; }
-        displayResult(result)
-        clearData(masterArray)
+        displayResult(result);
+        console.log(`results are: ` + result)
+        clearData(masterArray);
         a = result;
-        (arr[0]).push(a)
-        lastOp = lastOp.toString()
+        (arr[0]).push(a);
+        lastOp = lastOp.toString();
         if(!(lastOp === `=`)) { 
             (arr[0]).push(lastOp);
             (arr[1]).push(lastOp);
@@ -60,119 +67,137 @@ function operate(value, arr) {
 }
 
 function getValues(arr) {
-    values = [],  
+    gvValues = [],  
     trueOp = (arr[1])[0],
     data = arr[0],
     lastOp = (arr[1])[1],
     ops = arr[1],
     amountOps = ops.length;
+    console.warn(`GV amountOps switch: ` + amountOps)
     switch(amountOps) {
         case 0:
-                copyData =  data.slice(0)
-                copyData.forEach((button, index) => {
-                    if(isNaN(button)) {
-                        copyData.splice(index,1)
-                    }
-                });
-                a = copyData.splice(0)
-                a = a.join(``)
-                values.push(a)
+                copyData =  data.slice(0);
+                a = copyData.splice(0);
+                a = a.join(``);
+                gvValues.push(a);
                 break;
         case 1: 
-                copyData = data.slice(0)
-                copyData.forEach((number, index) => {
-                    if(isNaN(number)) {
-                        b = copyData.splice(index+1)
-                        copyData.splice(index,1)
+                copyData = data.slice(0);
+                copyData.forEach((button, index) => {
+                    if(isNaN(button) && button != `.`) {
+                        b = copyData.splice(index+1);
+                        copyData.splice(index,1);
                     }
                 });
-                op = arr[1][0]
-                a = copyData.splice(0)
-                a = a.join(``)
-                b = b.join(``)
-                values.push(a, op, b)
+                op = arr[1][0];
+                a = copyData.splice(0);
+                a = a.join(``);
+                b = b.join(``);
+                gvValues.push(a, trueOp, b);
                 break;
         case 2:
-                opIndex = data.indexOf(trueOp)
-                lastOp = data.splice(-1)
-                b = data.splice(opIndex+1).join(``)
-                op = data.splice(opIndex)
-                a = data.splice(0).join(``)
-                values.push(a, trueOp , b)
+                opIndex = data.indexOf(trueOp);
+                lastOp = data.splice(-1);
+                b = data.splice(opIndex+1).join(``);
+                op = data.splice(opIndex);
+                a = data.splice(0).join(``);
+                gvValues.push(a, trueOp , b);
+                console.log(`a: ` + a + ` | op: ` + op + ` | b: ` + b)
+                console.table(gvValues)
     }
-    return values;
+    console.log(`GV gvValues: `) 
+    console.log(gvValues)
+    return gvValues;
 }
 
+
+//if . do x if not do y?
 function displayEntry(arr) {
-        infoScreen.textContent = ``;  
-        arr.forEach(value => {
-            value = formatValueForDisplay(value)
-            infoScreen.textContent += value    
-        });
+    console.log(`DE arr:`)
+    console.table(arr) 
+    infoScreen.textContent = ``;  
+    arr.forEach(value => {
+        value = formatValueForDisplay(value);
+        console.warn(`Adding "` + value + `" to Entry`)
+        infoScreen.textContent += value;   
+    });
 }
 
 function displayResult(value) {
-    value = formatValueForDisplay(value)
+    console.log(`DR value:` + value)
+    value = formatValueForDisplay(value);
     resultScreen.textContent = value
-    resultScreen.style.cssText = `color: green;`
+    resultScreen.style.cssText = `color: lightgreen;`;
 }
 
 function formatValueForDisplay(value) {
-    stringValue = value.toString()
+    console.log(`FVD value: ` + value) 
+    stringValue = value.toString();
+    console.error(`stringValue: ` + stringValue) 
     if(!(stringValue.includes(`.`))) {
         value = tidyCommas(value);
     } else {
-        values = stringValue.split(`.`)
-        integers = tidyCommas(values[0]);
-        decimals = tidyDecimals(values[1]);
-        value = integers + `.` + decimals
+        fvdValues = stringValue.split(`.`),
+        integers = tidyCommas(fvdValues[0]),
+        decimals = tidyDecimals(fvdValues[1]);
+        value = integers + `.` + decimals;
+        console.log(`value is: ` + value)
     }
+    console.log(`FVD returning: ` + value)
     return value;
 }
 
 function tidyDecimals(value) {
-    decimalValue = 0;
-    valueLength = value.length
-    makeDecimal = [1]
+    console.log(`tidyDecimals: ` + value)
+    decimalValue = 0,
+    valueLength = value.length,
+    makeDecimal = [1];
     for(x = 1; x <= valueLength; x++) {
-        makeDecimal.push(0)
+        makeDecimal.push(0);
     }
     makeDecimal = makeDecimal.join(``);
     value = value / makeDecimal;
     if(valueLength >= 5) {
-        decimalValue = value.toFixed(5)
+        decimalValue = value.toFixed(5);
     } else {
         for(x = 1; x <= 5; x++) {
             if (value == value.toFixed(x)) {
-                decimalValue = value.toFixed(x)
+                decimalValue = value.toFixed(x);
                 break;
             }
         }
     }
-    decimals = decimalValue.split(`.`)
+    decimals = decimalValue.split(`.`);
+    //if(decimals[1] === `0`) { decimals[1] = ``; }
+    console.log(`tidyDecimals returning: ` + decimals[1])
     return decimals[1];
 }
 
 function tidyCommas(value) {
-        stringValue = (value.toString()).split(``)
+    console.log(`tidyCommas: ` + value)
+        stringValue = (value.toString()).split(``);
         stringLength = stringValue.length;
         totalCommas = parseInt((stringLength-1) / 3);
         for(x = 1; x <= totalCommas; x++) {
-            stringValue.splice((stringLength-(3 * x)), 0, `,`)
+            stringValue.splice((stringLength-(3 * x)), 0, `,`);
         }
+        console.log(`tidyCommas returning: ` + stringValue.join(``))
         return stringValue.join(``);
 }
 
 function calculate(arr) {
-    a = parseInt((arr[0]*10000))
-    op = arr[1]
-    b = parseInt((arr[2]*10000))
+    console.log(`calculating: `);
+    console.log(arr);
+    a = parseInt((arr[0]*10000));
+    op = arr[1],
+    b = parseInt((arr[2]*10000));
+    console.log(`a: ` + a + ` | op: ` + op + ` | b: ` + b)
     if(op === `/` && (a === 0 || b === 0)) { return displayError(`divideZero`)}
     switch(op) {
-            case "+": return add(a,b)/10000
-            case "-": return subtract(a,b)/10000
-            case "*": return multiply(a,b)/(10000*10000)
-            case "/": return divide(a,b)
+            case "+": return add(a,b)/10000;
+            case "-": return subtract(a,b)/10000;
+            case "*": return multiply(a,b)/(10000*10000);
+            case "/": return divide(a,b);
         }
 }
 
@@ -193,8 +218,8 @@ function divide(a, b) {
 }
 
 function clearData(arr, full) {
-    arr[0].splice(0)
-    arr[1].splice(0)
+    arr[0].splice(0);
+    arr[1].splice(0);
     if(full) {
         infoScreen.textContent = 0;
         resultScreen.textContent = 0;

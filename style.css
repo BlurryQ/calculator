@@ -3,6 +3,7 @@
     color: white;
     font-size: 25px;
     border-radius: 15px;
+    font-family:  'Orbitron', sans-serif;
 }
 
 button {
@@ -22,20 +23,23 @@ button {
     width: max-content;
     flex-direction: column;
     padding: 15px;
+    border: 4px double grey;
 }
 
 .screens {
     display: flex;
     flex-direction: column;
+    /*flex-wrap: wrap;*/
     border: 5px double black;
     width: 280px;
     padding: 10px;
     background-color: grey;
+    font-family:  'Black Ops One', sans-serif;
 }
 
 #info-screen,
 #result-screen {
-    font-size: 50px;
+    font-size: 35px;
     background-color: grey;
 }
 
