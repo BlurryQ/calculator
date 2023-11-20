@@ -64,6 +64,7 @@ function operate(value, arr) {
     }
 }
 
+//maybe getValues switch for removed values? (arr, skipB = false)
 function getValues(arr) {
     gvValues = [],  
     trueOp = (arr[1])[0],
@@ -110,7 +111,7 @@ function displayEntry(arr) {
     infoScreen.textContent = ``;  
     arr.forEach(value => {
         value = formatValueForDisplay(value);
-        console.log(value);
+        //console.log(value);
         infoScreen.textContent += value;   
     });
 }
@@ -132,6 +133,7 @@ function formatValueForDisplay(value) {
         value = integers + `.` + decimals;
 
     }
+    console.log(`fvValue: ` + value)
     return value;
 }
 
@@ -200,29 +202,43 @@ function divide(a, b) {
     return (a / b);
 }
 
+//getvalues will find b if opLength = 1. switch in GV or something here
 function removeLastInput(arr) {
-    input = arr[0],
-    ops = arr[1],
+    let input = arr[0],
+    inputLength = input.length,
+    lastInput = input[inputLength-2], //-2 as last input = remove
+    ops = arr[1];
+    ops.splice(-1,1)
     opsLength = ops.length;
+    console.log(`lastinPut ` + lastInput + ` | opsLength: ` + opsLength)
+    console.table(ops)
+    console.warn(`lastInput is not a number: ` + (isNaN(lastInput)))
     //if op length > 0 and b = `` ?
-    if(opsLength > 0) {
+    if(opsLength > 0 && isNaN(lastInput)) {
         input.splice(-2,2);
-        ops.splice(-2,2);
         console.table(input)
         console.table(ops)
+        console.log(`level 1`)
+    } else if(opsLength > 0) {
+        input.splice(-2,2);
+        ops.splice(-1,1);
+        console.table(input)
+        console.table(ops)
+        console.log(`level 2`)
     } else {
         input.splice(-2,2);
         ops.splice(-1,1);
+        console.log(`level 3`)
     }
-    values = getValues(masterArray);
-    console.table(values);
-    displayEntry(values);
+    rlValues = getValues(masterArray);
+    console.table(rlValues);
+    displayEntry(rlValues);
     if(input.length === 0) {
         infoScreen.textContent = 0
     }
 }
 
-function clearData(arr, full) {
+function clearData(arr, full = false) {
     arr[0].splice(0);
     arr[1].splice(0);
     if(full) {
