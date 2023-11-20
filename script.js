@@ -34,27 +34,25 @@ function operate(value, arr) {
     if(isNaN(value) && value != `.`) {
         totalOps.push(value)
         if(value ===`clear`) {
-            clearData(arr, true);
+            return clearData(arr, true);
         }
-        isEquals = totalOps[0].toString();
-        if((isEquals === `=`) && (value === `=`)) {
-            displayError(`equalsFirstOp`);
-            return;
+        if(value ===`remove`) {
+            return removeLastInput(arr);
+        }
+        if(totalOps.length > 0) {
+            isEquals = totalOps[0].toString();
+            if((isEquals === `=`) && (value === `=`)) {
+                displayError(`equalsFirstOp`);
+                return;
+            }
         }
     }
     values = getValues(masterArray);
-    console.log(`operate values: ` + values); 
     displayEntry(values);
-    console.table(values)
-    console.error(`amountOps`);
-    console.table(totalOps);
-    console.table(data);
     if(amountOps === 2) {
-        console.log(`values HERE: ` + values)
         result = calculate(values);
         if(result === `error`) { return; }
         displayResult(result);
-        console.log(`results are: ` + result)
         clearData(masterArray);
         a = result;
         (arr[0]).push(a);
@@ -73,7 +71,6 @@ function getValues(arr) {
     lastOp = (arr[1])[1],
     ops = arr[1],
     amountOps = ops.length;
-    console.warn(`GV amountOps switch: ` + amountOps)
     switch(amountOps) {
         case 0:
                 copyData =  data.slice(0);
@@ -103,37 +100,29 @@ function getValues(arr) {
                 a = data.splice(0).join(``);
                 gvValues.push(a, trueOp , b);
                 console.log(`a: ` + a + ` | op: ` + op + ` | b: ` + b)
-                console.table(gvValues)
+        
     }
-    console.log(`GV gvValues: `) 
-    console.log(gvValues)
     return gvValues;
 }
 
 
-//if . do x if not do y?
 function displayEntry(arr) {
-    console.log(`DE arr:`)
-    console.table(arr) 
     infoScreen.textContent = ``;  
     arr.forEach(value => {
         value = formatValueForDisplay(value);
-        console.warn(`Adding "` + value + `" to Entry`)
+        console.log(value);
         infoScreen.textContent += value;   
     });
 }
 
 function displayResult(value) {
-    console.log(`DR value:` + value)
     value = formatValueForDisplay(value);
     resultScreen.textContent = value
     resultScreen.style.cssText = `color: lightgreen;`;
 }
 
 function formatValueForDisplay(value) {
-    console.log(`FVD value: ` + value) 
     stringValue = value.toString();
-    console.error(`stringValue: ` + stringValue) 
     if(!(stringValue.includes(`.`))) {
         value = tidyCommas(value);
     } else {
@@ -141,14 +130,12 @@ function formatValueForDisplay(value) {
         integers = tidyCommas(fvdValues[0]),
         decimals = tidyDecimals(fvdValues[1]);
         value = integers + `.` + decimals;
-        console.log(`value is: ` + value)
+
     }
-    console.log(`FVD returning: ` + value)
     return value;
 }
 
 function tidyDecimals(value) {
-    console.log(`tidyDecimals: ` + value)
     decimalValue = 0,
     valueLength = value.length,
     makeDecimal = [1];
@@ -168,26 +155,22 @@ function tidyDecimals(value) {
         }
     }
     decimals = decimalValue.split(`.`);
-    //if(decimals[1] === `0`) { decimals[1] = ``; }
-    console.log(`tidyDecimals returning: ` + decimals[1])
+    if(decimals[1] === `0`) { decimals[1] = ``; }
     return decimals[1];
 }
 
 function tidyCommas(value) {
-    console.log(`tidyCommas: ` + value)
         stringValue = (value.toString()).split(``);
         stringLength = stringValue.length;
         totalCommas = parseInt((stringLength-1) / 3);
         for(x = 1; x <= totalCommas; x++) {
             stringValue.splice((stringLength-(3 * x)), 0, `,`);
         }
-        console.log(`tidyCommas returning: ` + stringValue.join(``))
+
         return stringValue.join(``);
 }
 
 function calculate(arr) {
-    console.log(`calculating: `);
-    console.log(arr);
     a = parseInt((arr[0]*10000));
     op = arr[1],
     b = parseInt((arr[2]*10000));
@@ -215,6 +198,28 @@ function multiply(a, b) {
 
 function divide(a, b) {
     return (a / b);
+}
+
+function removeLastInput(arr) {
+    input = arr[0],
+    ops = arr[1],
+    opsLength = ops.length;
+    //if op length > 0 and b = `` ?
+    if(opsLength > 0) {
+        input.splice(-2,2);
+        ops.splice(-2,2);
+        console.table(input)
+        console.table(ops)
+    } else {
+        input.splice(-2,2);
+        ops.splice(-1,1);
+    }
+    values = getValues(masterArray);
+    console.table(values);
+    displayEntry(values);
+    if(input.length === 0) {
+        infoScreen.textContent = 0
+    }
 }
 
 function clearData(arr, full) {
