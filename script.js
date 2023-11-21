@@ -25,22 +25,21 @@ buttons.forEach(button => {
 
 
 function operate(value, arr) {
-    console.warn(`THIS IS THE START`);
+    console.warn(`THIS IS THE START: ` + value);
     data = arr[0],
-    totalOps = arr[1];
+    ops = arr[1];
     data.push(value);
-    ops = arr[1],
     amountOps = ops.length;
     if(isNaN(value) && value != `.`) {
-        totalOps.push(value)
+        ops.push(value)
         if(value ===`clear`) {
             return clearData(arr, true);
         }
         if(value ===`remove`) {
-            return removeLastInput(arr);
+            removeLastInput(arr);
         }
-        if(totalOps.length > 0) {
-            isEquals = totalOps[0].toString();
+        if(ops.length > 0) {
+            isEquals = ops[0].toString();
             if((isEquals === `=`) && (value === `=`)) {
                 displayError(`equalsFirstOp`);
                 return;
@@ -62,9 +61,9 @@ function operate(value, arr) {
             (arr[1]).push(lastOp);
         }
     }
+    console.error(`THIS IS THE OFFICIAL END`)
 }
 
-//maybe getValues switch for removed values? (arr, skipB = false)
 function getValues(arr) {
     gvValues = [],  
     trueOp = (arr[1])[0],
@@ -108,12 +107,17 @@ function getValues(arr) {
 
 
 function displayEntry(arr) {
-    infoScreen.textContent = ``;  
-    arr.forEach(value => {
-        value = formatValueForDisplay(value);
-        //console.log(value);
-        infoScreen.textContent += value;   
-    });
+    console.table(arr)
+    infoScreen.textContent = ``;
+    if(arr[0][0] === undefined) {
+        infoScreen.textContent = `0`;
+    } else {
+        arr.forEach(value => {
+            console.log(`adding: ` + value)
+            value = formatValueForDisplay(value);
+            infoScreen.textContent += value;   
+        });
+    }
 }
 
 function displayResult(value) {
@@ -131,9 +135,7 @@ function formatValueForDisplay(value) {
         integers = tidyCommas(fvdValues[0]),
         decimals = tidyDecimals(fvdValues[1]);
         value = integers + `.` + decimals;
-
     }
-    console.log(`fvValue: ` + value)
     return value;
 }
 
@@ -202,7 +204,6 @@ function divide(a, b) {
     return (a / b);
 }
 
-//getvalues will find b if opLength = 1. switch in GV or something here
 function removeLastInput(arr) {
     let input = arr[0],
     inputLength = input.length,
@@ -210,32 +211,18 @@ function removeLastInput(arr) {
     ops = arr[1];
     ops.splice(-1,1)
     opsLength = ops.length;
-    console.log(`lastinPut ` + lastInput + ` | opsLength: ` + opsLength)
-    console.table(ops)
-    console.warn(`lastInput is not a number: ` + (isNaN(lastInput)))
-    //if op length > 0 and b = `` ?
-    if(opsLength > 0 && isNaN(lastInput)) {
-        input.splice(-2,2);
-        console.table(input)
-        console.table(ops)
-        console.log(`level 1`)
-    } else if(opsLength > 0) {
+    if(opsLength > 0 && (isNaN(lastInput) && lastInput != `.`)) {
         input.splice(-2,2);
         ops.splice(-1,1);
-        console.table(input)
-        console.table(ops)
-        console.log(`level 2`)
+    } else if(opsLength > 0) {
+        input.splice(-2,2);
     } else {
         input.splice(-2,2);
         ops.splice(-1,1);
-        console.log(`level 3`)
+
     }
     rlValues = getValues(masterArray);
-    console.table(rlValues);
     displayEntry(rlValues);
-    if(input.length === 0) {
-        infoScreen.textContent = 0
-    }
 }
 
 function clearData(arr, full = false) {
