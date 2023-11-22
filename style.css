@@ -6,11 +6,12 @@
     font-family:  'Orbitron', sans-serif;
 }
 
-button {
+.button {
     margin: 5px;
     padding: 15px;
     width: 70px;
     border: 3px double grey;
+    text-align: center;
 }
 
 .calculator {
@@ -29,9 +30,8 @@ button {
 .screens {
     display: flex;
     flex-direction: column;
-    /*flex-wrap: wrap;*/
     border: 5px double black;
-    width: 280px;
+    width: 450px;
     padding: 10px;
     background-color: grey;
     font-family:  'Black Ops One', sans-serif;
@@ -47,6 +47,7 @@ button {
     align-self: flex-end;
 }
 
+.top-row,
 .first-row,
 .second-row,
 .third-row,
