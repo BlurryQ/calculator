@@ -91,6 +91,7 @@ function getValues(arr) {
                     removeLastEntry(arr, false)              
                 }
                 a = a.join(``);
+                if(a === `0`) { data.splice(0,1) }
                 gvValues.push(a);
                 break;
         case 1: 
@@ -121,6 +122,7 @@ function getValues(arr) {
                 op = data.splice(opIndex);
                 a = data.splice(0).join(``);
                 if(a === ``) { a = `0`}
+                if(b === ``) { b = `0`}
                 gvValues.push(a, trueOp , b);
     }
     return gvValues;
@@ -189,7 +191,9 @@ function tidyDecimals(value) {
     }
     makeDecimal = makeDecimal.join(``);
     value = value / makeDecimal;
-    if(valueLength >= 5) {
+    if(value.toFixed(5) == `1.00000`) { 
+        return `99999`}
+    else if(valueLength >= 5) {
         decimalValue = value.toFixed(5);
     } else {
         for(x = 1; x <= 5; x++) {
