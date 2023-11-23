@@ -1,3 +1,5 @@
+const digitLimit = 11;
+
 let masterArray = [inputtedData = [], inputtedOps = []],
 allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
@@ -59,7 +61,7 @@ function operate(inputValue, arr) {
         if(result === `error`) { return; }
         resultString = result.toString(),
         resultLength = resultString.length;
-        if(resultLength > 15) {
+        if(resultLength > digitLimit) {
             return displayError(`tooLong`);
         }
         displayResult(result);
@@ -86,7 +88,7 @@ function getValues(arr) {
                 copyData =  data.slice(0);
                 a = copyData.splice(0);
                 aLength = a.length;
-                if(aLength > 15) {
+                if(aLength > digitLimit) {
                     displayError(`tooLong`)      
                     removeLastEntry(arr, false)              
                 }
@@ -108,7 +110,7 @@ function getValues(arr) {
                 b = b.join(``);
                 if(a === ``) { a = `0`}
                 bLength = b.length;
-                if(bLength > 15) {
+                if(bLength > digitLimit) {
                     ops.push(trueOp)
                     displayError(`tooLong`)      
                     removeLastEntry(arr, false)              
@@ -300,3 +302,15 @@ function displayError(record) {
                                     return `error`;
     }
 }
+
+/*-------------------------------------------
+
+large digit errors
+
+ops signs make screen blink
+
+re-order buttons
+
+overall look
+
+-------------------------------------------*/
