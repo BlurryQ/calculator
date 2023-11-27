@@ -1,6 +1,7 @@
-const digitLimit = 11;
+const digitLimit = 13;
 
 let masterArray = [inputtedData = [], inputtedOps = []],
+containError = false,
 allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
 
 const infoScreen = document.getElementById(`info-screen`);
@@ -31,6 +32,7 @@ function operate(inputValue, arr) {
     data.push(inputValue);
     amountOps = ops.length;
     if(isNaN(inputValue) && inputValue != `.`) {
+        infoScreen.classList.add(`blink`)
         ops.push(inputValue)
         if(inputValue ===`clear`) {
             return clearData(arr, true);
@@ -41,7 +43,7 @@ function operate(inputValue, arr) {
         if(ops.length > 0) {
             firstOp = ops[0].toString();
             if((firstOp === `=`) && (inputValue === `=`)) {
-                displayError(`firstOpIsEquals`);
+                containError = displayError(`firstOpIsEquals`);
                 removeLastEntry(arr, false)
                 return;
             }
@@ -58,13 +60,17 @@ function operate(inputValue, arr) {
     if(amountOps === 2) {
         infoScreen.textContent += lastOp;
         result = calculate(values);
-        if(result === `error`) { return; }
+        if(containError === true) { 
+            containError = false;
+            return;
+        }
         resultString = result.toString(),
         resultLength = resultString.length;
-        if(resultLength > digitLimit) {
-            return displayError(`tooLong`);
-        }
         displayResult(result);
+        if(containError === true) { 
+            result = undefined;
+            containError = false;
+        }
         clearData(arr);
         a = result;
         (arr[0]).push(a);
@@ -74,6 +80,7 @@ function operate(inputValue, arr) {
             (arr[1]).push(lastOp);
         }
     }
+    
 }
 
 function getValues(arr) {
@@ -89,7 +96,7 @@ function getValues(arr) {
                 a = copyData.splice(0);
                 aLength = a.length;
                 if(aLength > digitLimit) {
-                    displayError(`tooLong`)      
+                    containError = displayError(`warnTooLong`)      
                     removeLastEntry(arr, false)              
                 }
                 a = a.join(``);
@@ -112,7 +119,7 @@ function getValues(arr) {
                 bLength = b.length;
                 if(bLength > digitLimit) {
                     ops.push(trueOp)
-                    displayError(`tooLong`)      
+                    containError = displayError(`warnTooLong`)      
                     removeLastEntry(arr, false)              
                 }
                 gvValues.push(a, trueOp, b);
@@ -166,6 +173,7 @@ function displayEntry(arr) {
 }
 
 function displayResult(value) {
+    if(value >= 9999999999999) { return displayError(`tooLong`) }
     value = formatValueForDisplay(value);
     resultScreen.textContent = value
     resultScreen.style.cssText = `color: lightgreen;`;
@@ -230,6 +238,7 @@ function tidyCommas(value) {
 }
 
 function calculate(arr) {
+    infoScreen.classList.remove(`blink`)
     a = parseInt((arr[0]*10000));
     op = arr[1],
     b = parseInt((arr[2]*10000));
@@ -291,23 +300,26 @@ function clearData(arr, full = false) {
     }
 }
 
-function displayError(record) {
+function displayError(record, arr = masterArray) {
+    containError = true;
     switch(record) {
         case `firstOpIsEquals`:     resultScreen.textContent = `Error: No operators found`;
-                                    return `error`;
+                                    return true;
         case `divideZero`:          infoScreen.textContent = `Error:`;
                                     resultScreen.textContent = `Even Google can't do that!!`;
-                                    return `error`;
+                                    return true;
+        case `warnTooLong`:         resultScreen.textContent = `Warning: Maximum 13 digits`;
+                                    return true;                                  
         case `tooLong`:             resultScreen.textContent = `Error: Exceeds maximum digits`;
-                                    return `error`;
+                                    return true;
     }
 }
 
 /*-------------------------------------------
 
-large digit errors
+large digit errors > double ops when result too large
 
-ops signs make screen blink
+ops signs make screen blink > get it working on =
 
 re-order buttons
 
