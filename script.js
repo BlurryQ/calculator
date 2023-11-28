@@ -8,6 +8,7 @@ const infoScreen = document.getElementById(`info-screen`);
 const resultScreen = document.getElementById(`result-screen`);
 
 const keyboardInput = document.addEventListener(`keypress`, event => {
+    containError = false;
     resultScreen.style.cssText = `color: white;`;
     if(allowedKeys.includes(event.key)) {
         if(event.key !== `Enter`) { 
@@ -21,12 +22,14 @@ const keyboardInput = document.addEventListener(`keypress`, event => {
 const buttons = document.querySelectorAll(`div.button`);
 buttons.forEach(button => {
     button.addEventListener(`click`, () => {
+        containError = false;
         resultScreen.style.cssText = `color: white;`;
         operate(button.id, masterArray);
     })
 });
 
 function operate(inputValue, arr) {
+    infoScreen.classList.remove(`blink`)
     data = arr[0],
     ops = arr[1];
     data.push(inputValue);
@@ -62,13 +65,14 @@ function operate(inputValue, arr) {
         result = calculate(values);
         if(containError === true) { 
             containError = false;
+            clearData(arr)
             return;
         }
         resultString = result.toString(),
         resultLength = resultString.length;
         displayResult(result);
-        if(containError === true) { 
-            result = undefined;
+        if(containError === true) {
+            result = 0;
             containError = false;
         }
         clearData(arr);
@@ -162,15 +166,12 @@ function decimalCheck(arr) {
 
 function displayEntry(arr) {
     infoScreen.textContent = ``;
-    if(arr[0][0] === undefined) {
-        infoScreen.textContent = `0`;
-    } else {
-        arr.forEach(value => {
-            value = formatValueForDisplay(value);
-            infoScreen.textContent += value;   
-        });
-    }
+    arr.forEach(value => {
+        value = formatValueForDisplay(value);
+        infoScreen.textContent += value;   
+    });
 }
+
 
 function displayResult(value) {
     if(value >= 9999999999999) { return displayError(`tooLong`) }
@@ -238,15 +239,14 @@ function tidyCommas(value) {
 }
 
 function calculate(arr) {
-    infoScreen.classList.remove(`blink`)
-    a = parseInt((arr[0]*10000));
+    a = parseInt((arr[0]*1000000));
     op = arr[1],
-    b = parseInt((arr[2]*10000));
+    b = parseInt((arr[2]*1000000));
     if(op === `/` && (a === 0 || b === 0)) { return displayError(`divideZero`)}
     switch(op) {
-            case "+": return add(a,b)/10000;
-            case "-": return subtract(a,b)/10000;
-            case "*": return multiply(a,b)/(10000*10000);
+            case "+": return add(a,b)/1000000;
+            case "-": return subtract(a,b)/1000000;
+            case "*": return multiply(a,b)/(1000000*1000000);
             case "/": return divide(a,b);
         }
 }
@@ -300,7 +300,7 @@ function clearData(arr, full = false) {
     }
 }
 
-function displayError(record, arr = masterArray) {
+function displayError(record) {
     containError = true;
     switch(record) {
         case `firstOpIsEquals`:     resultScreen.textContent = `Error: No operators found`;
@@ -315,14 +315,10 @@ function displayError(record, arr = masterArray) {
     }
 }
 
-/*-------------------------------------------
-
-large digit errors > double ops when result too large
-
-ops signs make screen blink > get it working on =
+/* -------------------------------------------
 
 re-order buttons
 
 overall look
 
--------------------------------------------*/
+------------------------------------------- */

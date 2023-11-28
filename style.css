@@ -14,15 +14,20 @@
     text-align: center;
 }
 
- .blink {
-    animation: blinker 0.1s;
-  }
-  
-  @keyframes blinker {
+.button:hover {
+    border: 3px solid lightblue;
+    box-shadow: -7px -7px 3px lightblue;
+}
+
+.blink {
+    animation: blinker 0.15s;
+}
+
+@keyframes blinker {
     50% {
-      opacity: 0;
+        opacity: 0;
     }
-  } 
+} 
 
 .calculator {
     margin: auto;
@@ -47,7 +52,12 @@
     font-family:  'Black Ops One', sans-serif;
 }
 
-#info-screen,
+#info-screen{
+    font-size: 25px;
+    background-color: grey;
+    word-wrap: break-word;
+}
+
 #result-screen {
     font-size: 35px;
     background-color: grey;
