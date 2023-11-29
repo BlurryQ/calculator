@@ -12,11 +12,44 @@
     width: 70px;
     border: 3px double grey;
     text-align: center;
+    height: 30px;
 }
 
-.button:hover {
+
+.number,
+.operator,
+.clear {
+    transition: height 0.2s,
+                width 0.2s,
+                margin 0.2s,
+                box-shadow 0.2s;
+}
+
+.number:hover {
     border: 3px solid lightblue;
-    box-shadow: -7px -7px 3px lightblue;
+    box-shadow: -5px -5px 3px lightblue;
+    height: 25px;
+    width: 65px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.operator:hover {
+    border: 3px solid lightcyan;
+    box-shadow: -5px -5px 3px lightcyan;
+    height: 25px;
+    width: 65px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.clear:hover {
+    border: 3px solid lightgray;
+    box-shadow: -5px -5px 3px lightgray;
+    height: 25px;
+    width: 65px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .blink {
