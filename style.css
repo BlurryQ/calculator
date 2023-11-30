@@ -15,41 +15,61 @@
     height: 30px;
 }
 
-
 .number,
 .operator,
-.clear {
+.clear,
+.remove {
     transition: height 0.2s,
                 width 0.2s,
                 margin 0.2s,
                 box-shadow 0.2s;
 }
 
-.number:hover {
-    border: 3px solid lightblue;
-    box-shadow: -5px -5px 3px lightblue;
+.number:hover,
+.remove:hover,
+.operator:hover,
+.clear:hover {
     height: 25px;
     width: 65px;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
-.operator:hover {
-    border: 3px solid lightcyan;
-    box-shadow: -5px -5px 3px lightcyan;
-    height: 25px;
-    width: 65px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+
+.number:hover,
+.remove:hover {
+    border: 3px solid whitesmoke;
+    box-shadow: -5px -5px 3px whitesmoke;
 }
 
 .clear:hover {
-    border: 3px solid lightgray;
-    box-shadow: -5px -5px 3px lightgray;
-    height: 25px;
-    width: 65px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    border: 3px solid lightcoral;
+    box-shadow: -5px -5px 3px lightcoral;
+}
+
+#\*.operator:hover {
+    border: 3px solid lightsalmon;
+    box-shadow: -5px -5px 3px lightsalmon;  
+}
+
+#\/.operator:hover {
+    border: 3px solid palevioletred;
+    box-shadow: -5px -5px 3px palevioletred;  
+}
+
+#\-.operator:hover {
+    border: 3px solid palevioletred;
+    box-shadow: -5px -5px 3px palevioletred;  
+}
+
+#\+.operator:hover {
+    border: 3px solid lightblue;
+    box-shadow: -5px -5px 3px lightblue;  
+}
+
+#\=.operator:hover {
+    border: 3px solid lightgreen;
+    box-shadow: -5px -5px 3px lightgreen;  
 }
 
 .blink {
@@ -73,6 +93,7 @@
     flex-direction: column;
     padding: 15px;
     border: 4px double grey;
+    box-shadow: -8px -12px 0px rgb(50, 50, 50);
 }
 
 .screens {
@@ -106,15 +127,17 @@
 .third-row,
 .fourth-row {
     display: flex;
-    align-self: center;
+    align-self: flex-end;
+    margin-right: 8px;
 }
 
-.first-row {
-    padding-top: 10px;
+#\. {
+    width: 115px;
 }
 
 #\= {
     background-color: green;
+    width: 140px;
 }
 
 #\/ {
@@ -122,7 +145,7 @@
 }
 
 #\+ {
-    background-color: blue;
+    background-color: rgb(40, 40, 184);
 }
 
 #\- {
@@ -135,4 +158,26 @@
 
 #clear {
     background-color: red;
+    width: 140px;
+}
+
+#remove {
+    width: 115px;   
+}
+
+.solar-panels{
+    border: 2px solid darkolivegreen;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.panel {
+    border: 2px solid darkolivegreen;
+    background-color: darkgoldenrod;
+    border-radius: 2px;
+    padding: 10px;
 }
