@@ -2,58 +2,58 @@ const digitLimit = 13;
 
 let masterArray = [inputtedData = [], inputtedOps = []],
 containError = false,
-allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '*', '-', '+', '.', '=', `Enter`];
+allowedKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "/", "*", "-", "+", ".", "=", "Enter"];
 
-const infoScreen = document.getElementById(`info-screen`);
-const resultScreen = document.getElementById(`result-screen`);
+const infoScreen = document.getElementById("info-screen");
+const resultScreen = document.getElementById("result-screen");
 
-const keyboardInput = document.addEventListener(`keypress`, event => {
+const keyboardInput = document.addEventListener("keypress", event => {
     containError = false;
-    resultScreen.style.cssText = `color: black;`;
+    resultScreen.style.cssText = "color: black;";
     if(allowedKeys.includes(event.key)) {
-        if(event.key !== `Enter`) { 
+        if(event.key !== "Enter") { 
             operate(event.key, masterArray);
         } else {
-            operate(`=`, masterArray);
+            operate("=", masterArray);
         }
     }
 })
 
 const buttons = document.querySelectorAll(`div.button`);
 buttons.forEach(button => {
-    button.addEventListener(`click`, () => {
+    button.addEventListener("click", () => {
         containError = false;
-        resultScreen.style.cssText = `color: black;`;
+        resultScreen.style.cssText = "color: black;";
         operate(button.id, masterArray);
     })
 });
 
 function operate(inputValue, arr) {
-    infoScreen.classList.remove(`blink`)
+    infoScreen.classList.remove("blink")
     data = arr[0],
     ops = arr[1];
     data.push(inputValue);
     amountOps = ops.length;
-    if(isNaN(inputValue) && inputValue != `.`) {
-        infoScreen.classList.add(`blink`)
+    if(isNaN(inputValue) && inputValue != ".") {
+        infoScreen.classList.add("blink")
         ops.push(inputValue)
-        if(inputValue ===`clear`) {
+        if(inputValue ==="clear") {
             return clearData(arr, true);
         }
-        if(inputValue ===`remove`) {
+        if(inputValue ==="remove") {
             removeLastEntry(arr);
         }
         if(ops.length > 0) {
             firstOp = ops[0].toString();
-            if((firstOp === `=`) && (inputValue === `=`)) {
-                containError = displayError(`firstOpIsEquals`);
+            if((firstOp === "=") && (inputValue === "=")) {
+                containError = displayError("firstOpIsEquals");
                 removeLastEntry(arr, false)
                 return;
             }
         }
     }
     values = getValues(arr);
-    if(inputValue === `.`) {
+    if(inputValue === ".") {
         removeDecimal = decimalCheck(values);
         if(removeDecimal) {
             data.splice(-1,1)
@@ -79,7 +79,7 @@ function operate(inputValue, arr) {
         a = result;
         (arr[0]).push(a);
         lastOp = lastOp.toString();
-        if(!(lastOp === `=`)) { 
+        if(!(lastOp === "=")) { 
             (arr[0]).push(lastOp);
             (arr[1]).push(lastOp);
         }
@@ -100,30 +100,30 @@ function getValues(arr) {
                 a = copyData.splice(0);
                 aLength = a.length;
                 if(aLength > digitLimit) {
-                    containError = displayError(`warnTooLong`)      
+                    containError = displayError("warnTooLong")      
                     removeLastEntry(arr, false)              
                 }
-                a = a.join(``);
-                if(a === `0`) { data.splice(0,1) }
+                a = a.join("");
+                if(a === "0") { data.splice(0,1) }
                 gvValues.push(a);
                 break;
         case 1: 
                 copyData = data.slice(0);
                 copyData.forEach((button, index) => {
-                    if(isNaN(button) && button != `.`) {
+                    if(isNaN(button) && button != ".") {
                         b = copyData.splice(index+1);
                         copyData.splice(index,1);
                     }
                 });
                 op = arr[1][0];
                 a = copyData.splice(0);
-                a = a.join(``);
-                b = b.join(``);
-                if(a === ``) { a = `0`}
+                a = a.join("");
+                b = b.join("");
+                if(a === "") { a = "0"}
                 bLength = b.length;
                 if(bLength > digitLimit) {
                     ops.push(trueOp)
-                    containError = displayError(`warnTooLong`)      
+                    containError = displayError("warnTooLong")      
                     removeLastEntry(arr, false)              
                 }
                 gvValues.push(a, trueOp, b);
@@ -131,11 +131,11 @@ function getValues(arr) {
         case 2:
                 opIndex = data.indexOf(trueOp);
                 lastOp = data.splice(-1);
-                b = data.splice(opIndex+1).join(``);
+                b = data.splice(opIndex+1).join("");
                 op = data.splice(opIndex);
-                a = data.splice(0).join(``);
-                if(a === ``) { a = `0`}
-                if(b === ``) { b = `0`}
+                a = data.splice(0).join("");
+                if(a === "") { a = "0"}
+                if(b === "") { b = "0"}
                 gvValues.push(a, trueOp , b);
     }
     return gvValues;
@@ -144,19 +144,19 @@ function getValues(arr) {
 function decimalCheck(arr) {
     removeDecimal = false,
     a = arr[0],
-    a = a.split(``),
+    a = a.split(""),
     b = arr[2],
     bExists = false;
     if(b !== undefined) {
         bExists = true;
-        b = b.split(``);
+        b = b.split("");
     } 
-    aTotalDecimals = a.filter(item => item === `.`) 
+    aTotalDecimals = a.filter(item => item === ".") 
     if(aTotalDecimals.length === 2) {
         removeDecimal = true;
     }
     if(bExists) {
-        bTotalDecimals = b.filter(item => item === `.`) 
+        bTotalDecimals = b.filter(item => item === ".") 
         if(bTotalDecimals.length === 2) {
             removeDecimal = true;
         }  
@@ -165,7 +165,7 @@ function decimalCheck(arr) {
 }
 
 function displayEntry(arr) {
-    infoScreen.textContent = ``;
+    infoScreen.textContent = "";
     arr.forEach(value => {
         value = formatValueForDisplay(value);
         infoScreen.textContent += value;   
@@ -174,20 +174,20 @@ function displayEntry(arr) {
 
 
 function displayResult(value) {
-    if(value >= 9999999999999) { return displayError(`tooLong`) }
+    if(value >= 9999999999999) { return displayError("tooLong") }
     value = formatValueForDisplay(value);
     resultScreen.textContent = value
 }
 
 function formatValueForDisplay(value) {
     stringValue = value.toString();
-    if(!(stringValue.includes(`.`))) {
+    if(!(stringValue.includes("."))) {
         value = tidyCommas(value);
     } else {
-        fvdValues = stringValue.split(`.`),
+        fvdValues = stringValue.split("."),
         integers = tidyCommas(fvdValues[0]),
         decimals = tidyDecimals(fvdValues[1]);
-        value = integers + `.` + decimals;
+        value = integers + "." + decimals;
     }
     return value;
 }
@@ -199,10 +199,10 @@ function tidyDecimals(value) {
     for(x = 1; x <= valueLength; x++) {
         makeDecimal.push(0);
     }
-    makeDecimal = makeDecimal.join(``);
+    makeDecimal = makeDecimal.join("");
     value = value / makeDecimal;
-    if(value.toFixed(5) == `1.00000`) { 
-        return `99999`}
+    if(value.toFixed(5) == "1.00000") { 
+        return "99999"}
     else if(valueLength >= 5) {
         decimalValue = value.toFixed(5);
     } else {
@@ -213,27 +213,27 @@ function tidyDecimals(value) {
             }
         }
     }
-    decimals = decimalValue.split(`.`);
-    if(decimals[1] === `0`) { decimals[1] = ``; }
+    decimals = decimalValue.split(".");
+    if(decimals[1] === "0") { decimals[1] = ""; }
     return decimals[1];
 }
 
 function tidyCommas(value) {
-        stringValue = (value.toString()).split(``);
+        stringValue = (value.toString()).split("");
         stringLength = stringValue.length;
-        isNegative = stringValue.includes(`-`)
+        isNegative = stringValue.includes("-")
         if(isNegative) {
             totalCommas = parseInt((stringLength-2) / 3);
             for(x = 1; x <= totalCommas; x++) {
-                stringValue.splice((stringLength-(3 * x)), 0, `,`);
+                stringValue.splice((stringLength-(3 * x)), 0, ",");
             }
-            return stringValue.join(``);
+            return stringValue.join("");
         } else {
             totalCommas = parseInt((stringLength-1) / 3);
             for(x = 1; x <= totalCommas; x++) {
-                stringValue.splice((stringLength-(3 * x)), 0, `,`);
+                stringValue.splice((stringLength-(3 * x)), 0, ",");
             }
-            return stringValue.join(``);
+            return stringValue.join("");
         }
 }
 
@@ -241,7 +241,7 @@ function calculate(arr) {
     a = parseInt((arr[0]*1000000));
     op = arr[1],
     b = parseInt((arr[2]*1000000));
-    if(op === `/` && (a === 0 || b === 0)) { return displayError(`divideZero`)}
+    if(op === "/" && (a === 0 || b === 0)) { return displayError("divideZero")}
     switch(op) {
             case "+": return add(a,b)/1000000;
             case "-": return subtract(a,b)/1000000;
@@ -277,7 +277,7 @@ function removeLastEntry(arr, byInput = true) {
         input.splice(-1,1)
         return;
     }
-    if(opsLength > 0 && (isNaN(lastInput) && lastInput != `.`)) {
+    if(opsLength > 0 && (isNaN(lastInput) && lastInput != ".")) {
         input.splice(-2,2);
         ops.splice(-1,1);
     } else if(opsLength > 0) {
@@ -302,14 +302,14 @@ function clearData(arr, full = false) {
 function displayError(record) {
     containError = true;
     switch(record) {
-        case `firstOpIsEquals`:     resultScreen.textContent = `Error: No operators found`;
+        case "firstOpIsEquals":     resultScreen.textContent = "Error: No operators found";
                                     return true;
-        case `divideZero`:          infoScreen.textContent = `Error:`;
-                                    resultScreen.textContent = `Even Google can't do that!!`;
+        case "divideZero":          infoScreen.textContent = "Error:";
+                                    resultScreen.textContent = "Even Google can't do that!!";
                                     return true;
-        case `warnTooLong`:         resultScreen.textContent = `Warning: Maximum 13 digits`;
+        case "warnTooLong":         resultScreen.textContent = "Warning: Maximum 13 digits";
                                     return true;                                  
-        case `tooLong`:             resultScreen.textContent = `Error: Exceeds maximum digits`;
+        case "tooLong":             resultScreen.textContent = "Error: Exceeds maximum digits";
                                     return true;
     }
 }
