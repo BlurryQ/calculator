@@ -9,7 +9,7 @@ const resultScreen = document.getElementById(`result-screen`);
 
 const keyboardInput = document.addEventListener(`keypress`, event => {
     containError = false;
-    resultScreen.style.cssText = `color: white;`;
+    resultScreen.style.cssText = `color: black;`;
     if(allowedKeys.includes(event.key)) {
         if(event.key !== `Enter`) { 
             operate(event.key, masterArray);
@@ -23,7 +23,7 @@ const buttons = document.querySelectorAll(`div.button`);
 buttons.forEach(button => {
     button.addEventListener(`click`, () => {
         containError = false;
-        resultScreen.style.cssText = `color: white;`;
+        resultScreen.style.cssText = `color: black;`;
         operate(button.id, masterArray);
     })
 });
@@ -177,7 +177,6 @@ function displayResult(value) {
     if(value >= 9999999999999) { return displayError(`tooLong`) }
     value = formatValueForDisplay(value);
     resultScreen.textContent = value
-    resultScreen.style.cssText = `color: lightgreen;`;
 }
 
 function formatValueForDisplay(value) {
@@ -314,11 +313,3 @@ function displayError(record) {
                                     return true;
     }
 }
-
-/* -------------------------------------------
-
-re-order buttons
-
-overall look
-
-------------------------------------------- */

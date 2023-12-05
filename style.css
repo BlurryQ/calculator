@@ -1,18 +1,105 @@
 * {
-    background-color: black;
-    color: white;
     font-size: 25px;
     border-radius: 15px;
     font-family:  'Orbitron', sans-serif;
+}
+
+html{
+    background-image: url("./image.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.calculator {
+    background-color: rgb(85, 85, 85);
+    margin: auto;
+    margin-top: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid grey;
+    width: max-content;
+    flex-direction: column;
+    padding: 15px;
+    border: 4px double grey;
+    box-shadow: -8px -12px 0px rgb(50, 50, 50);
+}
+
+.brand {
+    align-self: flex-start;
+    background-color: rgb(85,85,85);
+}
+
+.solar-panels{
+    border: 2px solid darkolivegreen;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.panel {
+    border: 2px solid darkolivegreen;
+    background-color: darkgoldenrod;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.screens {
+    display: flex;
+    flex-direction: column;
+    border: 5px double black;
+    width: 450px;
+    padding: 10px;
+    background-color: olive;
+    font-family:  'Black Ops One', sans-serif;
+}
+
+#info-screen{
+    font-size: 25px;
+    background-color: olive;
+    word-wrap: break-word;
+    color: black;
+}
+
+#result-screen {
+    font-size: 35px;
+    background-color: olive;
+    align-self: flex-end;
+    color: black;
+}
+
+.top-row,
+.first-row,
+.second-row,
+.third-row,
+.fourth-row {
+    background-color: rgb(85, 85, 85);
+    display: flex;
+    align-self: center;
+    margin-right: 8px;
+}
+
+#clear {
+    background-color: red;
+    width: 140px;
+}
+
+#remove {
+    width: 115px;   
 }
 
 .button {
     margin: 5px;
     padding: 15px;
     width: 70px;
-    border: 3px double grey;
+    border: 3px double black;
     text-align: center;
     height: 30px;
+    background-color: grey;
+    color: black;
 }
 
 .number,
@@ -43,8 +130,13 @@
 }
 
 .clear:hover {
-    border: 3px solid lightcoral;
-    box-shadow: -5px -5px 3px lightcoral;
+    border: 3px solid rgb(255, 130, 130);
+    box-shadow: -5px -5px 3px rgb(255, 130, 130);
+}
+
+/* multiply */
+#\* {
+    background-color: orangered;
 }
 
 #\*.operator:hover {
@@ -52,25 +144,54 @@
     box-shadow: -5px -5px 3px lightsalmon;  
 }
 
+/* divide */
+#\/ {
+    background-color: purple;
+}
+
 #\/.operator:hover {
-    border: 3px solid palevioletred;
-    box-shadow: -5px -5px 3px palevioletred;  
+    border: 3px solid rgb(240, 80, 240);
+    box-shadow: -5px -5px 3px rgb(240, 80, 240);
+}
+
+/* subtract */
+#\- {
+    background-color: violet;
 }
 
 #\-.operator:hover {
-    border: 3px solid palevioletred;
-    box-shadow: -5px -5px 3px palevioletred;  
+    border: 3px solid rgb(210, 150, 190); 
+    box-shadow: -5px -5px 3px rgb(210, 150, 210);  
+}
+
+/* add */
+#\+ {
+    background-color: rgb(40, 40, 184);
 }
 
 #\+.operator:hover {
-    border: 3px solid lightblue;
-    box-shadow: -5px -5px 3px lightblue;  
+    border: 3px solid rgb(90, 120, 180);
+    box-shadow: -5px -5px 3px rgb(90, 120, 180);
+}
+
+/* equals */
+
+#\= {
+    background-color: green;
+    width: 140px;
 }
 
 #\=.operator:hover {
     border: 3px solid lightgreen;
     box-shadow: -5px -5px 3px lightgreen;  
 }
+
+/* decimal point*/
+#\. {
+    width: 115px;
+}
+
+/* blink effect */
 
 .blink {
     animation: blinker 0.15s;
@@ -82,102 +203,3 @@
     }
 } 
 
-.calculator {
-    margin: auto;
-    margin-top: 8%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 3px solid grey;
-    width: max-content;
-    flex-direction: column;
-    padding: 15px;
-    border: 4px double grey;
-    box-shadow: -8px -12px 0px rgb(50, 50, 50);
-}
-
-.screens {
-    display: flex;
-    flex-direction: column;
-    border: 5px double black;
-    width: 450px;
-    padding: 10px;
-    background-color: grey;
-    font-family:  'Black Ops One', sans-serif;
-}
-
-#info-screen{
-    font-size: 25px;
-    background-color: grey;
-    word-wrap: break-word;
-}
-
-#result-screen {
-    font-size: 35px;
-    background-color: grey;
-}
-
-#result-screen {
-    align-self: flex-end;
-}
-
-.top-row,
-.first-row,
-.second-row,
-.third-row,
-.fourth-row {
-    display: flex;
-    align-self: flex-end;
-    margin-right: 8px;
-}
-
-#\. {
-    width: 115px;
-}
-
-#\= {
-    background-color: green;
-    width: 140px;
-}
-
-#\/ {
-    background-color: purple;
-}
-
-#\+ {
-    background-color: rgb(40, 40, 184);
-}
-
-#\- {
-    background-color: violet;
-}
-
-#\* {
-    background-color: orangered;
-}
-
-#clear {
-    background-color: red;
-    width: 140px;
-}
-
-#remove {
-    width: 115px;   
-}
-
-.solar-panels{
-    border: 2px solid darkolivegreen;
-    border-radius: 0px;
-    display: flex;
-    flex-direction: row;
-    align-self: flex-end;
-    margin-right: 15px;
-    margin-bottom: 5px;
-}
-
-.panel {
-    border: 2px solid darkolivegreen;
-    background-color: darkgoldenrod;
-    border-radius: 2px;
-    padding: 10px;
-}
