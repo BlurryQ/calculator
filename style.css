@@ -6,19 +6,20 @@
 
 html{
     background-image: url("./image.png");
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: 100%;
 }
 
 .calculator {
     background-color: rgb(85, 85, 85);
     margin: auto;
-    margin-top: 8%;
+    margin-top: 8vh;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 3px solid grey;
-    width: max-content;
+    width: 60vw;
+    height: 80vh;
     flex-direction: column;
     padding: 15px;
     border: 4px double grey;
@@ -51,10 +52,11 @@ html{
     display: flex;
     flex-direction: column;
     border: 5px double black;
-    width: 450px;
+    width: 90%;
     padding: 10px;
     background-color: olive;
     font-family:  'Black Ops One', sans-serif;
+    letter-spacing: 0.2ch;
 }
 
 #info-screen{
@@ -80,21 +82,18 @@ html{
     display: flex;
     align-self: center;
     margin-right: 8px;
+    width: 90%;
 }
 
 #clear {
     background-color: red;
-    width: 140px;
-}
-
-#remove {
-    width: 115px;   
+    width: calc(100vw / 2 + 6vw);
 }
 
 .button {
-    margin: 5px;
-    padding: 15px;
-    width: 70px;
+    margin: 1vh 0.5vw;
+    padding: 1vh 0.5vw;
+    width: calc(100vw / 4);
     border: 3px double black;
     text-align: center;
     height: 30px;
@@ -113,13 +112,18 @@ html{
 }
 
 .number:hover,
+.operator:hover{
+    height: 90%;
+    width: 90%;
+    margin: 2vh 1vw;
+}
+
 .remove:hover,
-.operator:hover,
-.clear:hover {
-    height: 25px;
-    width: 65px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+.clear:hover,
+#\=:hover,
+#\.:hover {
+    height: 90%;
+    width: 90%;
 }
 
 
@@ -178,7 +182,7 @@ html{
 
 #\= {
     background-color: green;
-    width: 140px;
+    width: calc(100vw / 2 + 6vw);
 }
 
 #\=.operator:hover {
@@ -186,10 +190,6 @@ html{
     box-shadow: -5px -5px 3px lightgreen;  
 }
 
-/* decimal point*/
-#\. {
-    width: 115px;
-}
 
 /* blink effect */
 

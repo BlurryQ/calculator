@@ -313,3 +313,15 @@ function displayError(record) {
                                     return true;
     }
 }
+
+
+/* 
+
+To investigate
+
+- squishy hover effects 
+- displayError weirdness
+- displayResult weirdness
+- another font
+
+*/
