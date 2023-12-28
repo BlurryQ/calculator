@@ -1,4 +1,4 @@
-const digitLimit = 13;
+/* const digitLimit = 13;
 
 let masterArray = [inputtedData = [], inputtedOps = []],
 containError = false,
@@ -324,4 +324,154 @@ To investigate
 - displayResult weirdness
 - another font
 
+*/ 
+
+const infoScreen = document.getElementById("info-screen");
+const resultScreen = document.getElementById("result-screen");
+let a = b = null, opA = opB = null;
+
+const numbers = document.querySelectorAll(".number");
+numbers.forEach(number => {
+    number.addEventListener("click", () => {
+        console.log("Pressed: " + number.id)
+        operate(number.id, "number")
+    })
+});
+
+const operators = document.querySelectorAll(".operator");
+operators.forEach(operator => {
+    operator.addEventListener("click", () => {
+        console.log("Pressed: " + operator.id)
+        operate(operator.id, "operator")
+    })
+});
+
+const clearButton = document.getElementById("clear");
+clearButton.addEventListener("click", () => {
+    resetValues();
+})
+
+const removeButton = document.getElementById("remove");
+removeButton.addEventListener("click", () => {
+    const currentContent = infoScreen.textContent;
+    const contentLength = currentContent.length;
+    let newLength = contentLength - 1
+    let newContent = "";
+    for(let index = 0; index < newLength; index++) {
+        newContent += currentContent[index]
+    }
+    infoScreen.textContent = newContent;  
+})
+
+function getValues() {
+    let currentContent = infoScreen.textContent;
+    let opIndex = currentContent.search(allowedOperators);
+    a = currentContent.slice(0, opIndex);
+    opA = currentContent.slice(opIndex, opIndex+1)
+    b = currentContent.slice(opIndex+1,-1)
+}
+
+const allowedNumbers = /[\d.]/
+const allowedOperators = /[-+*/="Enter"]/
+
+const keyboardInput = document.addEventListener("keypress", event => {
+    const isAllowedNumber = allowedNumbers.test(event.key)
+    if(isAllowedNumber) {
+        console.log("number: " + event.key)
+        return operate(event.key, "number")
+    }
+    const isAllowedOperator = allowedOperators.test(event.key)
+    if(isAllowedOperator && event.key!= "Enter") {
+        console.log("operator: " + event.key)
+        return operate(event.key, "operator")
+    } else  if(event.key === "Enter") {
+        console.log("operator: " + "=")
+        return operate("=", "operator")   
+    }
+    
+});
+
+function operate(input, type) {
+    infoScreen.textContent == "0" ? infoScreen.textContent = input : infoScreen.textContent += input;
+    switch(type) {
+        case "number": 
+            if(opA != null) { 
+                b === null ? b = input : b += input;
+            } else {
+                a === null ? a = input : a += input;
+            }
+            break;
+        case "operator":
+            opA != null ? opB = input : opA = input;
+            if(opB != null) {
+                getValues()
+                const result = calculate(a,opA,b);
+                if(result === "error") {
+                    return;
+                }
+                resultScreen.textContent = result;
+                a = result;
+                opA = opB;
+                opB = null;
+                b = null;
+                if(opA === "=") { 
+                    opA = null;
+                    infoScreen.textContent = a
+                } else {
+                    infoScreen.textContent = a + opA
+                } 
+            }
+            break;
+        }
+}
+
+function calculate(a, op, b) {
+    console.log("a: " + a + " | op: " + op + " | b: " + b);
+    a = Number(a);
+    b = Number(b);
+    if(op === "/" && (a === 0 || b === 0)) { 
+        infoScreen.textContent = "Even Google can't do that!!";
+        resultScreen.textContent = "Error";
+        return "error";
+    }
+    switch(op) {
+            case "+": return add(a,b);
+            case "-": return subtract(a,b);
+            case "*": return multiply(a,b);
+            case "/": return divide(a,b);
+        }
+}
+
+function add(a, b) {
+    return (a + b);
+}
+
+function subtract(a, b) {
+    return (a - b);
+}
+
+function multiply(a, b) {
+    return (a * b);
+}
+
+function divide(a, b) {
+    return (a / b);
+}
+
+function resetValues() {
+    a = b = null, opA = opB = null;
+    infoScreen.textContent = "0";
+    resultScreen.textContent = "0";
+}
+
+/* 
+You should round answers with long decimals so that they don’t overflow the screen.
+
+Pressing = before entering all of the numbers or an operator could cause problems! 
+
+Users can get floating point numbers if they do the math required to get one, 
+but they can’t type them in yet. Add a . button and let users input decimals! 
+Make sure you don’t let them type more than one though: 12.3.56.5. 
+It is hard to do math on these numbers. 
+(disable the decimal button if there’s already one in the display)
 */
