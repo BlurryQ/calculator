@@ -1,12 +1,16 @@
 * {
     font-size: 25px;
     border-radius: 15px;
-    font-family:  'Orbitron', sans-serif;
+    font-family: 'Alfa Slab One', serif;
+}
+
+:root {
+    --calc-width: max(16rem, 20vw);
+    --button-width: max(4rem, 5vw);
 }
 
 html{
-    background-image: url("./image.png");
-    background-repeat: repeat-y;
+    background: url("./image.png") repeat-y;
     background-size: 100%;
 }
 
@@ -17,19 +21,17 @@ html{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: clamp(15rem, 25vw, 40vw);
-    height: 75vh;
+    width: var(--calc-width);
+    height: max(485px, 70vh);
     flex-direction: column;
-    padding: 15px;
+    padding: 1vw;
     border: 4px double grey;
     box-shadow: -8px -12px 0px rgb(50, 50, 50);
-    position: relative;
 }
 
 .brand {
     align-self: flex-start;
     background-color: rgb(85,85,85);
-    position: absolute;
     top: 1vh;
 }
 
@@ -41,7 +43,6 @@ html{
     align-self: flex-end;
     margin-right: 0.2rem;;
     margin-bottom: 0.2rem;
-    position: absolute;
     top: 1vh;
 }
 
@@ -62,7 +63,6 @@ html{
     font-family:  'Black Ops One', sans-serif;
     letter-spacing: 0.2ch;
     height: 15%;
-    position: absolute;
     top: 8vh;
 }
 
@@ -88,47 +88,20 @@ html{
     background-color: rgb(85, 85, 85);
     display: flex;
     align-self: center;
-    margin-right: 8px;
-    width: 90%;
-}
-
-.top-row {
-    position: absolute;
-    top: 25vh;
-}
-
-.first-row {
-    position: absolute;
-    top: 36vh;
-}
-
-.second-row {
-    position: absolute;
-    top: 47vh;
-}
-
-.third-row {
-    position: absolute;
-    top: 58vh;
-}
-
-.fourth-row {
-    position: absolute;
-    top: 69vh;
+    width: var(--calc-width);
 }
 
 #clear {
     background-color: red;
-    width: calc(100vw / 2 + 6vw);
+    width: calc(var(--button-width) * 2 )
 }
 
 .button {
     margin: 1vh 0.5vw;
     padding: 1vh 0.5vw;
-    width: calc(100vw / 4);
+    width: var(--button-width);
     border: 3px double black;
     text-align: center;
-    height: 30%;
     background-color: grey;
     color: black;
 }
@@ -139,25 +112,9 @@ html{
 .remove {
     transition: height 0.2s,
                 width 0.2s,
-                margin 0.2s,
+                padding 0.2s,
                 box-shadow 0.2s;
 }
-
-/* .number:hover,
-.operator:hover{
-    height: 90%;
-    width: 90%;
-    margin: 2vh 1vw;
-}
-
-.remove:hover,
-.clear:hover,
-#\=:hover,
-#\.:hover {
-    height: 90%;
-    width: 90%;
-} */
-
 
 .number:hover,
 .remove:hover {
@@ -214,7 +171,7 @@ html{
 
 #\= {
     background-color: green;
-    width: calc(100vw / 2 + 6vw);
+    width: calc(var(--button-width) * 2 )
 }
 
 #\=.operator:hover {
@@ -234,4 +191,3 @@ html{
         opacity: 0;
     }
 } 
-
