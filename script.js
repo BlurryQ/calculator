@@ -1,3 +1,7 @@
+const numberLimit = 13;
+
+const limit = document.getElementById("limit")
+
 const infoScreen = document.getElementById("info-screen");
 const resultScreen = document.getElementById("result-screen");
 let a = b = null, opA = opB = null;
@@ -37,6 +41,8 @@ function deleteLastInput() {
         newContent += currentContent[index]
     }
     if(newLength === 0) { newContent = 0 }
+    getValues()
+    limit.textContent = "";
     return infoScreen.textContent = newContent;  
 }
 
@@ -74,6 +80,12 @@ function operate(input, type) {
             } else {
                 a === null ? a = input : a += input;
             }
+            if(a.length >= numberLimit) {
+                limit.textContent = `Maximum digits (${numberLimit}) reached!!`
+            }
+            if(b != null && b.length >= numberLimit) {
+                limit.textContent = `Maximum digits (${numberLimit}) reached!!`
+            }
             break;
         case "operator":
             opA != null ? opB = input : opA = input;
@@ -93,10 +105,12 @@ function getValues() {
 }
 
 function prepareCalculation() {
+    limit.textContent = "";
     getValues()
     let result = calculate(a,opA,b);
     if(result === "error") { return; }
     result = formatResult(result)
+    if(result === "error") { return; }
     resultScreen.textContent = result;
     a = result;
     opA = opB;
@@ -113,6 +127,12 @@ function prepareCalculation() {
 function formatResult(result) {
     fixedResult = result.toFixed(5).replace(/0+$/, "");
     parsedResult = parseInt(fixedResult);
+    parsedLength = parsedResult.toString().length
+    if(parsedLength >= numberLimit) {
+        infoScreen.textContent = "Error:";
+        resultScreen.textContent =  `Maximum digits (${numberLimit}) reached!!`;
+        return "error";
+    }
     if(result === parsedResult) { 
         return result 
      } else {
@@ -180,4 +200,5 @@ function resetValues() {
     a = b = null, opA = opB = null;
     infoScreen.textContent = "0";
     resultScreen.textContent = "0";
+    limit.textContent = "";
 }

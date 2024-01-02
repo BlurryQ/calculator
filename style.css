@@ -7,6 +7,7 @@
 :root {
     --calc-width: max(16rem, 20vw);
     --button-width: max(4rem, 5vw);
+    --calc-height: max(600px, 75vh);
 }
 
 html{
@@ -17,16 +18,22 @@ html{
 .calculator {
     background-color: rgb(85, 85, 85);
     margin: auto;
-    margin-top: 10vh;
+    margin-top: 5vh;
     display: flex;
     justify-content: center;
     align-items: center;
     width: var(--calc-width);
-    height: max(485px, 70vh);
+    height: var(--calc-height);
     flex-direction: column;
     padding: 1vw;
     border: 4px double grey;
     box-shadow: -8px -12px 0px rgb(50, 50, 50);
+}
+
+#limit {
+    color: red;
+    text-shadow: 1px 1px black;
+    font-size: 0.8rem;
 }
 
 .brand {
@@ -62,8 +69,8 @@ html{
     background-color: olive;
     font-family:  'Black Ops One', sans-serif;
     letter-spacing: 0.2ch;
-    height: 15%;
     top: 8vh;
+    flex-wrap: nowrap;
 }
 
 #info-screen{
@@ -78,6 +85,7 @@ html{
     background-color: olive;
     align-self: flex-end;
     color: black;
+    max-width: 13ch;
 }
 
 .top-row,
