@@ -9,7 +9,8 @@ let a = b = null, opA = opB = null;
 const numbers = document.querySelectorAll(".number");
 numbers.forEach(number => {
     number.addEventListener("click", () => {
-        infoScreen.classList.remove("blink")
+        if(infoScreen.textContent === resultScreen.textContent) { infoScreen.textContent = "" };
+        infoScreen.classList.remove("blink");
         operate(number.id, "number");
     })
 });
@@ -53,6 +54,7 @@ const keyboardInput = document.addEventListener("keypress", event => {
     const isAllowedNumber = allowedNumbers.test(event.key)
     infoScreen.classList.remove("blink")
     if(isAllowedNumber) {
+        if(infoScreen.textContent === resultScreen.textContent) { infoScreen.textContent = "" };
         return operate(event.key, "number")
     }
     infoScreen.classList.add("blink")
@@ -71,10 +73,10 @@ function operate(input, type) {
     if(input === ".") {
         let containsDecimal = decimalCheck(input)
         if(containsDecimal) { return }
-    }
-    infoScreen.textContent === "0" ? infoScreen.textContent = input : infoScreen.textContent += input;
+    }    
     switch(type) {
         case "number": 
+            infoScreen.textContent === "0" ? infoScreen.textContent = input : infoScreen.textContent += input;
             if(opA != null) { 
                 b === null ? b = input : b += input;
             } else {
@@ -88,6 +90,12 @@ function operate(input, type) {
             }
             break;
         case "operator":
+            if(infoScreen.textContent === "0") {
+                a = 0;
+                infoScreen.textContent = 0 + input;
+            } else {
+                infoScreen.textContent += input;
+            }
             opA != null ? opB = input : opA = input;
             if(opB != null) {
                 prepareCalculation();
