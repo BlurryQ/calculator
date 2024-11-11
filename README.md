@@ -4,7 +4,7 @@
 
 ## Summary
 
-**Hosted:** [Calculator Page](https://blurryq.github.io/calculator/)
+**Hosted:** [Calculator](https://blurryq.github.io/calculator/)
 
 This project is my take on creating a functional online calculator. It’s been a fun and challenging build that dives into HTML, CSS, and JavaScript, all while tackling the complexities of responsive design and interactive components. With attention to layout and detail, I aimed to blend aesthetics with functionality, all organized through modular, clean code.
 
